@@ -1,34 +1,37 @@
-import React from "react";
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import React, { useContext } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { FirebaseContext } from "../../firebase";
 
 const NuevoPlatillo = () => {
-
+  //contxto para las operaciones de firebase
+  const { firebase } = useContext(FirebaseContext); 
+console.log(firebase);
+  //validacion y leer los datos del formulario
   const formik = useFormik({
     initialValues: {
-      nombre: '',
-      precio: '',
-      categoria: '',
-      imagen: '',
-      descripcion: '',
+      nombre: "",
+      precio: "",
+      categoria: "",
+      imagen: "",
+      descripcion: "",
     },
     validationSchema: Yup.object({
       nombre: Yup.string()
-                 .min(3, 'Debe tener 3 caracteres')
-                 .required('El nombre es obligatorio'),
+        .min(3, "Debe tener 3 caracteres")
+        .required("El nombre es obligatorio"),
       precio: Yup.number()
-                 .min(1, 'Debe tener un numero')
-                 .required('El precio es obligatorio'),
-      categoria: Yup.string()
-                 .required('El categoria es obligatorio'),
+        .min(1, "Debe tener un numero")
+        .required("El precio es obligatorio"),
+      categoria: Yup.string().required("El categoria es obligatorio"),
       descripcion: Yup.string()
-                 .min(10, 'Debe tener 10 caracteres')
-                 .required('El descripcion es obligatorio'),
+        .min(10, "Debe tener 10 caracteres")
+        .required("El descripcion es obligatorio"),
     }),
-    onSubmit: datos => {
+    onSubmit: (datos) => {
       console.log(datos);
-    }
-  })
+    },
+  });
 
   return (
     <>
@@ -36,9 +39,7 @@ const NuevoPlatillo = () => {
 
       <div className="flex justify-center mt-10">
         <div className="w-full max-w-3xl">
-          <form
-          onSubmit={formik.handleSubmit}
-          >
+          <form onSubmit={formik.handleSubmit}>
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
@@ -56,12 +57,15 @@ const NuevoPlatillo = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
-            { formik.touched.nombre && formik.errors.nombre ? (
-                    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-                        <p className="font-bold">Hubo un error:</p>
-                        <p>{formik.errors.nombre} </p>
-                    </div>
-                ) : null }
+            {formik.touched.nombre && formik.errors.nombre ? (
+              <div
+                className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5"
+                role="alert"
+              >
+                <p className="font-bold">Hubo un error:</p>
+                <p>{formik.errors.nombre} </p>
+              </div>
+            ) : null}
 
             <div className="mb-4">
               <label
@@ -82,12 +86,15 @@ const NuevoPlatillo = () => {
               />
             </div>
 
-            { formik.touched.precio && formik.errors.precio ? (
-                    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-                        <p className="font-bold">Hubo un error:</p>
-                        <p>{formik.errors.precio} </p>
-                    </div>
-                ) : null }
+            {formik.touched.precio && formik.errors.precio ? (
+              <div
+                className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5"
+                role="alert"
+              >
+                <p className="font-bold">Hubo un error:</p>
+                <p>{formik.errors.precio} </p>
+              </div>
+            ) : null}
 
             <div className="mb-4">
               <label
@@ -114,12 +121,15 @@ const NuevoPlatillo = () => {
               </select>
             </div>
 
-            { formik.touched.categoria && formik.errors.categoria ? (
-                    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-                        <p className="font-bold">Hubo un error:</p>
-                        <p>{formik.errors.categoria} </p>
-                    </div>
-                ) : null }
+            {formik.touched.categoria && formik.errors.categoria ? (
+              <div
+                className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5"
+                role="alert"
+              >
+                <p className="font-bold">Hubo un error:</p>
+                <p>{formik.errors.categoria} </p>
+              </div>
+            ) : null}
 
             <div className="mb-4">
               <label
@@ -172,12 +182,15 @@ const NuevoPlatillo = () => {
               ></textarea>
             </div>
 
-            { formik.touched.descripcion && formik.errors.descripcion ? (
-                    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-                        <p className="font-bold">Hubo un error:</p>
-                        <p>{formik.errors.descripcion} </p>
-                    </div>
-                ) : null }
+            {formik.touched.descripcion && formik.errors.descripcion ? (
+              <div
+                className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5"
+                role="alert"
+              >
+                <p className="font-bold">Hubo un error:</p>
+                <p>{formik.errors.descripcion} </p>
+              </div>
+            ) : null}
 
             <input
               type="submit"
