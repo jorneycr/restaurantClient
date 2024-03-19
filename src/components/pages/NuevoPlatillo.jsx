@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormik } from 'formik';
-import * as Yuo from 'yup';
+import * as Yup from 'yup';
 
 const NuevoPlatillo = () => {
 
@@ -12,7 +12,7 @@ const NuevoPlatillo = () => {
       imagen: '',
       descripcion: '',
     },
-    validationSchema: Yup.Object({
+    validationSchema: Yup.object({
       nombre: Yup.string()
                  .min(3, 'Debe tener 3 caracteres')
                  .required('El nombre es obligatorio'),
@@ -53,15 +53,15 @@ const NuevoPlatillo = () => {
                 placeholder="Nombre Platillo"
                 value={formik.values.nombre}
                 onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
+                onBlur={formik.handleBlur}
               />
             </div>
-            {/* { formik.touched.nombre && formik.errors.nombre ? (
+            { formik.touched.nombre && formik.errors.nombre ? (
                     <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
                         <p className="font-bold">Hubo un error:</p>
                         <p>{formik.errors.nombre} </p>
                     </div>
-                ) : null } */}
+                ) : null }
 
             <div className="mb-4">
               <label
@@ -78,16 +78,16 @@ const NuevoPlatillo = () => {
                 min="0"
                 value={formik.values.precio}
                 onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
+                onBlur={formik.handleBlur}
               />
             </div>
 
-            {/* { formik.touched.precio && formik.errors.precio ? (
+            { formik.touched.precio && formik.errors.precio ? (
                     <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
                         <p className="font-bold">Hubo un error:</p>
                         <p>{formik.errors.precio} </p>
                     </div>
-                ) : null } */}
+                ) : null }
 
             <div className="mb-4">
               <label
@@ -99,10 +99,10 @@ const NuevoPlatillo = () => {
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="precio"
-                // name="categoria"
+                name="categoria"
                 value={formik.values.categoria}
                 onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
+                onBlur={formik.handleBlur}
               >
                 <option value="">-- Seleccione --</option>
                 <option value="desayuno">Desayuno</option>
@@ -114,12 +114,12 @@ const NuevoPlatillo = () => {
               </select>
             </div>
 
-            {/* { formik.touched.categoria && formik.errors.categoria ? (
+            { formik.touched.categoria && formik.errors.categoria ? (
                     <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
                         <p className="font-bold">Hubo un error:</p>
                         <p>{formik.errors.categoria} </p>
                     </div>
-                ) : null } */}
+                ) : null }
 
             <div className="mb-4">
               <label
@@ -168,16 +168,16 @@ const NuevoPlatillo = () => {
                 placeholder="Descripción del Platillo"
                 value={formik.values.descripcion}
                 onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
+                onBlur={formik.handleBlur}
               ></textarea>
             </div>
 
-            {/* { formik.touched.descripcion && formik.errors.descripcion ? (
+            { formik.touched.descripcion && formik.errors.descripcion ? (
                     <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
                         <p className="font-bold">Hubo un error:</p>
                         <p>{formik.errors.descripcion} </p>
                     </div>
-                ) : null } */}
+                ) : null }
 
             <input
               type="submit"
