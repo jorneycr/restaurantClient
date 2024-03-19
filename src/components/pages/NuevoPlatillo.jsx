@@ -1,6 +1,35 @@
 import React from "react";
+import { useFormik } from 'formik';
+import * as Yuo from 'yup';
 
 const NuevoPlatillo = () => {
+
+  const formik = useFormik({
+    initialValues: {
+      nombre: '',
+      precio: '',
+      categoria: '',
+      imagen: '',
+      descripcion: '',
+    },
+    validationSchema: Yup.Object({
+      nombre: Yup.string()
+                 .min(3, 'Debe tener 3 caracteres')
+                 .required('El nombre es obligatorio'),
+      precio: Yup.number()
+                 .min(1, 'Debe tener un numero')
+                 .required('El precio es obligatorio'),
+      categoria: Yup.string()
+                 .required('El categoria es obligatorio'),
+      descripcion: Yup.string()
+                 .min(10, 'Debe tener 10 caracteres')
+                 .required('El descripcion es obligatorio'),
+    }),
+    onSubmit: datos => {
+      console.log(datos);
+    }
+  })
+
   return (
     <>
       <h1 className="text-3xl font-light mb-4">Agregar Platillo</h1>
@@ -8,7 +37,7 @@ const NuevoPlatillo = () => {
       <div className="flex justify-center mt-10">
         <div className="w-full max-w-3xl">
           <form
-          // onSubmit={formik.handleSubmit}
+          onSubmit={formik.handleSubmit}
           >
             <div className="mb-4">
               <label
@@ -22,8 +51,8 @@ const NuevoPlatillo = () => {
                 id="nombre"
                 type="text"
                 placeholder="Nombre Platillo"
-                // value={formik.values.nombre}
-                // onChange={formik.handleChange}
+                value={formik.values.nombre}
+                onChange={formik.handleChange}
                 // onBlur={formik.handleBlur}
               />
             </div>
@@ -47,8 +76,8 @@ const NuevoPlatillo = () => {
                 type="number"
                 placeholder="$20"
                 min="0"
-                // value={formik.values.precio}
-                // onChange={formik.handleChange}
+                value={formik.values.precio}
+                onChange={formik.handleChange}
                 // onBlur={formik.handleBlur}
               />
             </div>
@@ -71,8 +100,8 @@ const NuevoPlatillo = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="precio"
                 // name="categoria"
-                // value={formik.values.categoria}
-                // onChange={formik.handleChange}
+                value={formik.values.categoria}
+                onChange={formik.handleChange}
                 // onBlur={formik.handleBlur}
               >
                 <option value="">-- Seleccione --</option>
@@ -137,8 +166,8 @@ const NuevoPlatillo = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-40"
                 id="descripcion"
                 placeholder="Descripción del Platillo"
-                // value={formik.values.descripcion}
-                // onChange={formik.handleChange}
+                value={formik.values.descripcion}
+                onChange={formik.handleChange}
                 // onBlur={formik.handleBlur}
               ></textarea>
             </div>
