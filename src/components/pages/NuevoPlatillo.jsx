@@ -1,17 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FirebaseContext } from "../../firebase";
-import { useNavigate } from 'react-router-dom';
-import FileUploader from 'react-firebase-file-uploader';
+import { useNavigate } from "react-router-dom";
+import FileUploader from "react-firebase-file-uploader";
 
 const NuevoPlatillo = () => {
+  // state para las imagenes
+  const [subiendo, guardarSubiendo] = useState(false);
+  const [progreso, guardarProgreso] = useState(0);
+  const [urlimagen, guardarUrlimagen] = useState("");
+
   //contxto para las operaciones de firebase
   const { firebase } = useContext(FirebaseContext);
-console.log(firebase);
   //hook para redireccionar
   const navigate = useNavigate();
-  
+
   //validacion y leer los datos del formulario
   const formik = useFormik({
     initialValues: {
@@ -33,19 +37,48 @@ console.log(firebase);
         .min(10, "Debe tener 10 caracteres")
         .required("El descripcion es obligatorio"),
     }),
-    onSubmit: async  (platillo) => {
+    onSubmit: async (platillo) => {
       try {
         // Insert data into Firestore
         platillo.existencia = true;
-        await firebase.db.collection('productos').add(platillo);
+        platillo.imagen = urlimagen;
+        await firebase.db.collection("productos").add(platillo);
         formik.resetForm();
-        navigate('/menu');
+        navigate("/menu");
       } catch (error) {
         // Log any errors that occur during the insertion process
         console.error("Error adding document:", error);
       }
     },
   });
+
+  // Todo sobre las imagenes
+  const handleUploadStart = () => {
+    guardarProgreso(0);
+    guardarSubiendo(true);
+  };
+  const handleUploadError = (error) => {
+    guardarSubiendo(false);
+    console.log(error);
+  };
+  const handleUploadSuccess = async (nombre) => {
+    guardarProgreso(100);
+    guardarSubiendo(false);
+
+    // Almacenar la URL de destino
+    const url = await firebase.storage
+      .ref("productos")
+      .child(nombre)
+      .getDownloadURL();
+
+    console.log(url);
+    guardarUrlimagen(url);
+  };
+  const handleProgress = (progreso) => {
+    guardarProgreso(progreso);
+
+    console.log(progreso);
+  };
 
   return (
     <>
@@ -165,19 +198,22 @@ console.log(firebase);
               />
             </div>
 
-            {/* { subiendo && (
-                    <div className="h-12 relative w-full border">
-                        <div className="bg-green-500 absolute left-0 top-0 text-white px-2 text-sm h-12 flex items-center" style={{ width: `${progreso}%` }}>
-                            {progreso} % 
-                        </div>
-                    </div>
-                ) } */}
+            {subiendo && (
+              <div className="h-12 relative w-full border">
+                <div
+                  className="bg-green-500 absolute left-0 top-0 text-white px-2 text-sm h-12 flex items-center"
+                  style={{ width: `${progreso}%` }}
+                >
+                  {progreso} %
+                </div>
+              </div>
+            )}
 
-            {/* {urlimagen && (
-                    <p className="bg-green-500 text-white p-3 text-center my-5">
-                        La imagen se subió correctamente
-                    </p>
-                ) } */}
+            {urlimagen && (
+              <p className="bg-green-500 text-white p-3 text-center my-5">
+                La imagen se subió correctamente
+              </p>
+            )}
 
             <div className="mb-4">
               <label
