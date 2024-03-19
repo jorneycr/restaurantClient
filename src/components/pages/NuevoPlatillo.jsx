@@ -2,11 +2,16 @@ import React, { useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FirebaseContext } from "../../firebase";
+import { useNavigate } from 'react-router-dom';
+import FileUploader from 'react-firebase-file-uploader';
 
 const NuevoPlatillo = () => {
   //contxto para las operaciones de firebase
-  const { firebase } = useContext(FirebaseContext); 
+  const { firebase } = useContext(FirebaseContext);
 console.log(firebase);
+  //hook para redireccionar
+  const navigate = useNavigate();
+  
   //validacion y leer los datos del formulario
   const formik = useFormik({
     initialValues: {
@@ -28,8 +33,17 @@ console.log(firebase);
         .min(10, "Debe tener 10 caracteres")
         .required("El descripcion es obligatorio"),
     }),
-    onSubmit: (datos) => {
-      console.log(datos);
+    onSubmit: async  (platillo) => {
+      try {
+        // Insert data into Firestore
+        platillo.existencia = true;
+        await firebase.db.collection('productos').add(platillo);
+        formik.resetForm();
+        navigate('/menu');
+      } catch (error) {
+        // Log any errors that occur during the insertion process
+        console.error("Error adding document:", error);
+      }
     },
   });
 
@@ -138,7 +152,7 @@ console.log(firebase);
               >
                 Imagen
               </label>
-              {/* <FileUploader
+              <FileUploader
                 accept="image/*"
                 id="imagen"
                 name="imagen"
@@ -148,7 +162,7 @@ console.log(firebase);
                 onUploadError={handleUploadError}
                 onUploadSuccess={handleUploadSuccess}
                 onProgress={handleProgress}
-              /> */}
+              />
             </div>
 
             {/* { subiendo && (
